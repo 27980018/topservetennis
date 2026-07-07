@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy Control Panel - Top Serve Tennis Academy</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .admin-page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: var(--transition-fast);
+        }
+        .back-home-link:hover {
+            color: var(--accent-lime);
+            transform: translateX(-4px);
+        }
+        .admin-panel-card {
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-premium);
+        }
+        @media (max-width: 768px) {
+            .admin-panel-card {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-page-container">
+        <a href="index.html" class="back-home-link">
+            <i data-lucide="arrow-left"></i> Back to Live Website
+        </a>
+        
+        <div class="admin-panel-card">
+            <!-- Passcode Gate (Default Visible) -->
+            <div class="passcode-gate" id="admin-gate">
+                <!-- Login Form (Default) -->
+                <div id="admin-login-form-container">
+                    <div class="gate-header">
+                        <img src="logo.jpg" alt="Top Serve Logo" class="admin-gate-logo">
+                        <h3>Academy Portal Login</h3>
+                        <p>Authorized personnel only. Enter your Admin ID and Password.</p>
+                    </div>
+                    <form id="admin-login-form" class="gate-form">
+                        <input type="text" id="gate-admin-id" required placeholder="Admin ID">
+                        <input type="password" id="gate-password" required placeholder="Password">
+                        <button type="submit" class="btn btn-primary">Unlock Panel</button>
+                    </form>
+                    <p class="toggle-gate-link">Need to register admin credentials? <a href="#" id="toggle-to-register">Register here</a></p>
+                </div>
+
+                <!-- Register Form (Initially Hidden) -->
+                <div id="admin-register-form-container" class="hidden">
+                    <div class="gate-header">
+                        <img src="logo.jpg" alt="Top Serve Logo" class="admin-gate-logo">
+                        <h3>Register Admin Account</h3>
+                        <p>Set up your unique admin credentials. Master registration key required.</p>
+                    </div>
+                    <form id="admin-register-form" class="gate-form">
+                        <input type="text" id="register-admin-id" required placeholder="Choose Admin ID">
+                        <input type="password" id="register-password" required placeholder="Choose Password">
+                        <input type="password" id="register-confirm-password" required placeholder="Confirm Password">
+                        <input type="password" id="register-master-key" required placeholder="Master Registration Key">
+                        <button type="submit" class="btn btn-primary">Register Admin</button>
+                    </form>
+                    <p class="toggle-gate-link">Already have an admin account? <a href="#" id="toggle-to-login">Login here</a></p>
+                </div>
+
+                <div id="gate-error" class="gate-error-message hidden">Incorrect Admin ID or Password.</div>
+                <div id="gate-success" class="gate-error-message hidden" style="color: #4aff4a;">Registration successful! Please login.</div>
+            </div>
+
+            <!-- Admin Dashboard (Initially Hidden) -->
+            <div class="admin-dashboard-wrapper hidden" id="admin-dashboard">
+                <div class="dashboard-header">
+                    <div class="header-details">
+                        <span class="badge-accent"><i data-lucide="shield-check"></i> System Admin Mode</span>
+                        <h2>Gallery & Instagram Feed Manager</h2>
+                        <p>Upload new training photos/videos or delete existing media items to update the public gallery.</p>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btn-logout-portal"><i data-lucide="log-out"></i> Logout</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Column 1: Upload Form -->
+                    <div class="dashboard-column upload-col">
+                        <h3><i data-lucide="upload-cloud"></i> Upload New Media</h3>
+                        <form id="admin-upload-form" class="upload-form">
+                            <div class="form-group">
+                                <label>Select File (Photo or Video) *</label>
+                                <div class="file-dropzone" id="file-dropzone">
+                                    <input type="file" id="upload-file-input" accept="image/*,video/*" class="hidden-file-input">
+                                    <div class="dropzone-prompt" id="dropzone-prompt">
+                                        <i data-lucide="image" class="prompt-icon"></i>
+                                        <p>Click to select or drag & drop files here</p>
+                                        <span>Supports JPG, PNG, MP4, WebM</span>
+                                    </div>
+                                    <div class="dropzone-preview hidden" id="dropzone-preview">
+                                        <!-- Preview thumbnail/video will be injected here -->
+                                        <button type="button" class="btn-remove-preview" id="btn-remove-preview" aria-label="Remove preview"><i data-lucide="x"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="upload-caption">Caption Description *</label>
+                                <input type="text" id="upload-caption" required placeholder="Enter post caption or achievement description...">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="upload-category">Post Category / Tag *</label>
+                                <select id="upload-category" class="calc-select">
+                                    <option value="ITF Pro Tour">ITF Pro Tour / Event</option>
+                                    <option value="Junior Drills">Junior Development Drills</option>
+                                    <option value="Tournament Gold">Tournament Winners</option>
+                                    <option value="Under The Lights">Night Sessions</option>
+                                    <option value="Facility View">Stadium / Facilities</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; width: 100%; margin-top: 10px;">
+                                <button type="submit" class="btn btn-primary btn-full" id="btn-publish-media" style="flex: 2;">
+                                    Publish to Gallery Grid <i data-lucide="send"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline hidden" id="btn-cancel-edit" style="flex: 1; border-color: rgba(255, 99, 99, 0.3); color: rgba(255, 99, 99, 0.9);">
+                                    Cancel <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Column 2: Manage Active Items -->
+                    <div class="dashboard-column manage-col">
+                        <h3><i data-lucide="settings-2"></i> Manage Published Media</h3>
+                        <p class="col-desc">Below are the current items appearing in the gallery. Use the delete button to remove any item.</p>
+                        
+                        <div class="manage-items-list" id="manage-items-list">
+                            <!-- Active list items will be injected by app.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="app.js"></script>
+    <script>
+        // Trigger Lucide icons initialization for dynamic markup
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

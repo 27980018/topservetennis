@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin.html
+Allow: /
+
+# REPLACE WITH YOUR LIVE WEBSITE DOMAIN
+Sitemap: https://www.topservetennis.com/sitemap.xml
